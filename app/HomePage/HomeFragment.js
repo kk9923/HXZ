@@ -10,6 +10,7 @@ import {
 var ScreenWidth = Dimensions.get('window').width;
 import JsonUtils from '../utils/JsonUtil'
 import  Swiper from  'react-native-swiper'
+import ProductCenter from './ProductCenter'
 export default class GXS extends Component {
     constructor(props) {
         super(props);
@@ -66,7 +67,7 @@ export default class GXS extends Component {
             const  item = this.state.bannerSource[i].picture;
             banners.push(
                 <TouchableWithoutFeedback  key={i} onPress={()=>{
-                    AlertIOS.alert('dizhi =   '+item)
+                    AlertIOS.alert('图片地址 =   '+item)
                 }}>
                     <Image resizeMode='stretch'
                         style={styles.image} source={{uri:item+''}}/>
@@ -77,16 +78,6 @@ export default class GXS extends Component {
         <ScrollView style={{flex:1,backgroundColor:'#efefef'}}>
             <View style={{flexDirection:'column',flex:1,backgroundColor:'#fff'}}>
                 <Text style={styles.title}>好下款</Text>
-                <Swiper
-                    height={150}
-                    autoplay={true}
-                    autoplayTimeout={2.5}>
-                    {banners}
-                </Swiper>
-                <Image
-                       style={{width:100,height:200}} source={{uri:'http://img.rich.suyijia.com/images/2017/5/72eacb25-0af1-4be4-a33e-0d98555d791a.png'}}/>
-                <Image resizeMode='stretch'
-                       style={{width:100,height:200}} source={require('./user.png')}/>
 
                 <View style={{height:130,backgroundColor:'#f00',flexDirection:'row',justifyContent:'center',paddingTop:10,paddingBottom:6}}>
                 <View style={{flexDirection:'column',backgroundColor:'#f00',justifyContent:'space-between',alignItems:'center',flex:1}}>
@@ -97,7 +88,7 @@ export default class GXS extends Component {
                     <View style={{flexDirection:'column',backgroundColor:'#f00',justifyContent:'space-between',alignItems:'center',flex:1}}>
                         <Image  resizeMode='stretch' style={{height:25,height:35}} source={require('./user.png')}/>
                         <Text style={{color:'#fff',fontSize:14}}>还款金额（元）</Text>
-                        <Text style={{color:'#fff',fontSize:18}}>{this.state.HuankuanMoney}</Text>
+                        <Text style={{color:'#fff',fontSize:18}}>{(this.state.shenQingMoney *1.049/ this.state.HuankuanMonth).toFixed(2)}</Text>
                     </View>
                     <View style={{flexDirection:'column',backgroundColor:'#f00',justifyContent:'space-between',alignItems:'center',flex:1}}>
                         <Image  resizeMode='stretch' style={{height:25,height:35}} source={require('./user.png')}/>
@@ -137,7 +128,11 @@ export default class GXS extends Component {
                 <TouchableWithoutFeedback
                 onPress={()=>{
                     //this.getBannerList()
-                    AlertIOS.alert(''+this.state.bannerSource.length)
+                    //AlertIOS.alert(''+this.state.bannerSource.length)
+                    this.props.navigator.push({
+                        component:ProductCenter,
+                        arg:{hahah:'ffd'}
+                    })
                 }}>
                 <View style={{
                     borderRadius:20,
@@ -155,7 +150,12 @@ export default class GXS extends Component {
                     <Text style={styles.shenqing}>立即申请</Text>
                 </View>
                 </TouchableWithoutFeedback>
-
+                <Swiper
+                    height={150}
+                    autoplay={true}
+                    autoplayTimeout={2.5}>
+                    {banners}
+                </Swiper>
 
             </View>
 

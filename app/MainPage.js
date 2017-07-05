@@ -67,8 +67,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f9f9f9'
     },
     tabStyle:{
-        // padding: px2dp(8),
-        //marginTop:px2dp(4),
+        // padding: px2dp(
         alignItems:'center'
     },
     tab: {
