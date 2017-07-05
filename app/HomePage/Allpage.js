@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
        // height: 85,
         //alignItems: 'center',
         //justifyContent: 'center',
-        //backgroundColor: '#f0f',
+        //backgroundColor: '#f0f',ddddddddd
         flexDirection:'row'
     },
     image : {
