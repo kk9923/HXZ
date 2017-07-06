@@ -127,12 +127,10 @@ export default class GXS extends Component {
                 </View>
                 <TouchableWithoutFeedback
                 onPress={()=>{
-                    //this.getBannerList()
-                    //AlertIOS.alert(''+this.state.bannerSource.length)
-                    this.props.navigator.push({
-                        component:ProductCenter,
-                        arg:{hahah:'ffd'}
-                    })
+                    //this.getBa''+this.state.bannerSource.length)
+                    const  navigate  = this.props.navigate;
+                    navigate('ProductCenter')
+                    //
                 }}>
                 <View style={{
                     borderRadius:20,
@@ -194,7 +192,7 @@ const styles = StyleSheet.create({
     shenqing:{
         //width:200,
        // height:40,
-        fontSize:20,
+        fontSize:18,
         color:'#fff',
         textAlign:'center',
         //textAlignVertical:'center',

@@ -7,6 +7,7 @@ import {Text, StyleSheet, Image} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import HomeFragment from  '../app/HomePage/HomeFragment'
 import UserFragment from  '../app/UserPage/UserFragment'
+import  ProductDetail from '../app/HomePage/ProductDetail'
 export default class TabBar extends Component {
     static defaultProps = {
         selectedColor: '#00ff00',
@@ -36,7 +37,7 @@ export default class TabBar extends Component {
                     renderIcon={() => <Image style={styles.tab}  resizeMode="stretch" source={require('../image/home.png')}  />}
                     renderSelectedIcon={() => <Image style={styles.tab} resizeMode="stretch"   source={require('../image/home_select.png')} />}
                     onPress={() => this.setState({ selectedTab: 'home' })}>
-                    {<HomeFragment navigator={this.props.navigator}/>}
+                    {<HomeFragment navigate={this.props.navigation.navigate}/>}
 
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -57,6 +58,8 @@ export default class TabBar extends Component {
     componentWillMount() {
 
     }
+
+
 }
 
 const styles = StyleSheet.create({
