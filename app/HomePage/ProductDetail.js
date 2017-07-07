@@ -49,6 +49,7 @@ export default class TabBar extends Component {
             });
     }
     render() {
+        const  {navigate} = this.props.navigation
         const  loading = this.state.loading;
         if(loading){
             return (
@@ -57,8 +58,8 @@ export default class TabBar extends Component {
         }else {
 
         return (
-        <View>
-        <ScrollView style={{backgroundColor:'#fff'}}>
+        <View style={{flex:1}}>
+        <ScrollView style={{flex:1,backgroundColor:'#fff'}}>
             <View >
                 <View style={{height:1,backgroundColor:'#d9d9d9'}}/>
                 <View style={styles.listViewItem}>
@@ -107,14 +108,23 @@ export default class TabBar extends Component {
                     <Text style={{fontSize:13,color:'#999',marginLeft:17,marginTop:7,paddingBottom:30}}>{this.state.rowData.proIntroduction}</Text>
                     <View style={{height:1,backgroundColor:'#d9d9d9'}}/>
                 </View>
+                <View>
+                    <View style={{flexDirection:'row',paddingTop:10,paddingBottom:10,alignItems:'center',marginLeft:8}}>
+                        <View style={{backgroundColor:'#f00',width:3,height:18,borderRadius:5}}/>
+                        <Text style={{fontSize:15,color:'#333',marginLeft:6}}>产品介绍</Text>
+                    </View>
+                    <Text style={{fontSize:13,color:'#999',marginLeft:17,marginTop:7,paddingBottom:30}}>{this.state.rowData.proIntroduction}</Text>
+                    <View style={{height:1,backgroundColor:'#d9d9d9'}}/>
+                </View>
 
             </View>
         </ScrollView>
         <TouchableWithoutFeedback
             onPress={()=>{
                 //this.getBa''+this.state.bannerSource.length)
-                const  navigate  = this.props.navigate;
-                navigate('ProductCenter')
+                //const  navigate  = this.props.navigate;
+                //navigate('NowApply')
+            this.applyLoan(navigate)
                 //
             }}>
         <View style={{
@@ -122,14 +132,14 @@ export default class TabBar extends Component {
                     borderWidth:0.5,
                     borderColor:'#f00',
                     //width:ScreenWidth,
-                    height:40,
+                    height:35,
                     alignItems:'center',
                     backgroundColor:'#f00',
                     justifyContent:'center',
                     marginRight:50,
                     marginLeft:50,
-                   // paddingTop:10,
-                   // paddingBottom:10
+                     marginTop:10,
+                     marginBottom:10
             }}>
         <Text style={styles.shenqing}>立即申请</Text>
             </View>
@@ -139,9 +149,26 @@ export default class TabBar extends Component {
         }
     }
 
-    componentWillMount() {
-
+    applyLoan(navigate){
+        //AlertIOS.alert(''+this.state.id)
+        const map2 = new Map().set('apiVersion', '1.3.0').set('appCode','HXK1.3.0').set('appName','43').set('channel','ios').set('loanId',this.state.id).set('userId','61258').set('version','1.3.0').set('key','fEBRtWCX5PDFpJazDqZgHLgGPz0rdaSVf8/reeHkExkumh98/fEsiurXyaOnSKd3qwZ1btuDuJ1FQwFBsktvmFYH8rCdaO1gOcgIkkPC54/fZ24xbBZvvXoVJ0MBActy');
+        const json = JsonUtils.mapToJson(map2)
+        const url = 'https://jk.suyijia.com/loan/i/loan/applyLoan';
+        fetch(url, {
+            method: 'POST',      //请求方式
+            body: json
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if('1'===responseJson.code){
+                    navigate('NowApply',{name:''+this.state.rowData.title,applyUrl:responseJson.data.applyUrl})
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
+
 }
 
 const styles = StyleSheet.create({
@@ -178,11 +205,11 @@ const styles = StyleSheet.create({
         //textAlignVertical:'center',
         //backgroundColor:'#f0f'
         alignItems:'center',
-        backgroundColor:'#333',
+        //backgroundColor:'#333',
         justifyContent:'center',
-        borderRadius:20,
-        borderWidth:0.5,
-        borderColor:'#f00',
+       // borderRadius:20,
+       // borderWidth:0.5,
+        //borderColor:'#f00',
     }
 
 });

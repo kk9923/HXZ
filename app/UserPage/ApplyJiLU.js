@@ -3,19 +3,22 @@
  */
 import React, {Component} from 'react';
 import {
-    View, Text, StyleSheet, ListView, ToastAndroid, TouchableNativeFeedback, Image, ScrollView,TouchableOpacity,
+    View, Text, StyleSheet, ListView, TouchableNativeFeedback, Image, ScrollView,TouchableOpacity,
     Dimensions,
     RefreshControl,
     StatusBar,
     Alert,
     ActivityIndicator,
-    ProgressBarAndroid,
+    ProgressBarAndroid,AlertIOS,
     Platform
 } from 'react-native';
 const ScreenWidth = Dimensions.get('window').width/3;
 import JsonUtils from '../utils/JsonUtil'
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview'
 export default class HomePage extends Component {
+    static navigationOptions = {
+        title: '申请记录',
+    };
     constructor(props) {
         super(props);
         let dataList = []
@@ -41,17 +44,19 @@ export default class HomePage extends Component {
      * 请求网络
      */
     getLoanLists(booble){
-        const map2 = new Map().set('apiVersion', '1.3.0').set('appCode','HXK1.3.0').set('appName','43').set('channel','ios').set('flag','').set('loanType','').set('orderBy','1').set('page',this.state.pageNum).set('pageSize','10')
-            .set('version','1.3.0').set('key','fEBRtWCX5PDFpJazDqZgHLgGPz0rdaSVf8/reeHkExkumh98/fEsiurXyaOnSKd3qwZ1btuDuJ0FXhsYE5PTtUxdblAmKHPXUUp4iatLPTA3FkreRMhVJRNn3Ba9cn/TdIEYWsaMLRPorsfHznMozRY4ViKNAzFn');
+        const map2 = new Map().set('apiVersion', '1.3.0').set('appCode','HXK1.3.0').set('appName','43').set('channel','ios').set('page',this.state.pageNum).set('pageSize','10').set('userId','61258')
+            .set('version','1.3.0').set('key','fEBRtWCX5PDFpJazDqZgHLgGPz0rdaSVf8/reeHkExkumh98/fEsiurXyaOnSKd3qwZ1btuDuJ0AT+WoSJxwjw9eXhTSGdw5hzsf0/V8l+45YXU660fob2OvdS7KJrwBFD2ZWk5q2dY=');
         const json = JsonUtils.mapToJson(map2)
-        const url = 'https://jk.suyijia.com/loan/i/loan/getLoanList';
+        const url = 'https://jk.suyijia.com/loan/i/loan/applicationRecord';
         fetch(url, {
             method: 'POST',      //请求方式
             body: json
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                if('1'===responseJson.code){
+           // AlertIOS.alert(''+responseJson.success)
+                if(true==responseJson.success){
+             //   AlertIOS.alert(responseJson.total+'')
                     const  data = responseJson.rows;
                     if(! booble){
                         this.state.dataList= [];
@@ -79,9 +84,9 @@ export default class HomePage extends Component {
                     }
 
                     //this.setState({
-                   //     dataSource: this.state.dataSource.cloneWithRows(responseJson.rows),
-                  //      refreshing: false,
-                  //  });
+                    //     dataSource: this.state.dataSource.cloneWithRows(responseJson.rows),
+                    //      refreshing: false,
+                    //  });
 
                 }
             })
@@ -91,6 +96,7 @@ export default class HomePage extends Component {
     }
     //Using ListView
     render() {
+       // AlertIOS.alert(''+this.state.dataSource.length)
         const  isLoading = this.state.refreshing;
         if(isLoading){
             return (
@@ -101,29 +107,29 @@ export default class HomePage extends Component {
         }
         return (
 
-                <PullToRefreshListView
-                    style={{flex: 1}}
-                    ref={ (component) => this._pullToRefreshListView = component }
-                    viewType={PullToRefreshListView.constants.viewType.listView}
-                    // contentContainerStyle={{backgroundColor: 'yellow', }}
-                    //style={{marginTop: Platform.OS == 'ios' ? 64 : 56, }}
-                    // initialListSize={20}
-                    enableEmptySections={true}
-                    enabledPullUp={true}
-                    //  enabledPullDown={false}
-                    dataSource={this.state.dataSource}
-                    pageSize={20}
-                    renderRow={this._renderItem.bind(this)}
-                    renderHeader={this._renderHeader}
-                    renderFooter={this._renderFooter}
-                    //renderSeparator={(sectionID, rowID) => <View style={styles.separator} />}
-                    onRefresh={this._onRefresh}
-                    onLoadMore={this._onLoadMore}
-                    pullUpDistance={35}
-                    pullUpStayDistance={50}
-                    pullDownDistance={35}
-                    pullDownStayDistance={50}
-                />
+            <PullToRefreshListView
+                style={{flex: 1}}
+                ref={ (component) => this._pullToRefreshListView = component }
+                viewType={PullToRefreshListView.constants.viewType.listView}
+                // contentContainerStyle={{backgroundColor: 'yellow', }}
+                //style={{marginTop: Platform.OS == 'ios' ? 64 : 56, }}
+                // initialListSize={20}
+                enableEmptySections={true}
+                enabledPullUp={true}
+                //  enabledPullDown={false}
+                dataSource={this.state.dataSource}
+                pageSize={20}
+                renderRow={this._renderItem.bind(this)}
+                renderHeader={this._renderHeader}
+                renderFooter={this._renderFooter}
+                //renderSeparator={(sectionID, rowID) => <View style={styles.separator} />}
+                onRefresh={this._onRefresh}
+                onLoadMore={this._onLoadMore}
+                pullUpDistance={35}
+                pullUpStayDistance={50}
+                pullDownDistance={35}
+                pullDownStayDistance={50}
+            />
         )
     }
 
@@ -271,7 +277,7 @@ export default class HomePage extends Component {
     _renderItem(rowData, sectionID, rowID, highlightRow) {
         return (
             <TouchableOpacity
-                  onPress={this._itemClickCallback.bind(this, rowData)}
+                onPress={this._itemClickCallback.bind(this, rowData)}
             >
                 {this._renderItemContent(rowData)}
             </TouchableOpacity>
@@ -302,23 +308,22 @@ export default class HomePage extends Component {
             <View>
                 <View style={{height:12,backgroundColor:'#efefef'}}/>
                 <View style={styles.listViewItem}>
-                    <Image style={styles.image} resizeMode='stretch' source={{uri:'https://www.baidu.com/img/bd_logo1.png'}}/>
-                    {/*<Image style={styles.image} resizeMode='stretch' source={{uri:'https://img.rich.suyijia.com/images/2017/5/480373ed-7e65-4260-867f-caf3ee7a5f4a.png'}}/>*/}
+                    <Image style={styles.image} resizeMode='stretch' source={{uri:'https://www.baidu.com/img/bd_logo1.png'}}></Image>
                     <View>
                         <Text style={styles.title}>{rowData.title}</Text>
                         <Text style={styles.content}>{rowData.content}</Text>
                     </View>
                 </View>
                 <View style={styles.line}/>
-                <View style={{flexDirection:'row',paddingTop:10,paddingBottom:10,alignItems:'center'}}>
-                    {/*{loanLabelList}*/}
-                    <Text>成功申请</Text>
-                    <View style={{flexDirection:'row',position:'absolute',right:12}}>
-                        <Text>成功申请</Text>
-                        <Text style={styles.peopleNumber}>{rowData.peopleNumber}</Text>
-                        <Text>人</Text>
-                    </View>
-                </View>
+                {/*<View style={{flexDirection:'row',paddingTop:10,paddingBottom:10,alignItems:'center'}}>*/}
+                    {/*/!*{loanLabelList}*!/*/}
+                    {/*<Text>成功申请</Text>*/}
+                    {/*<View style={{flexDirection:'row',position:'absolute',right:12}}>*/}
+                        {/*<Text>成功申请</Text>*/}
+                        {/*<Text style={styles.peopleNumber}>{rowData.peopleNumber}</Text>*/}
+                        {/*<Text>人</Text>*/}
+                    {/*</View>*/}
+                {/*</View>*/}
             </View>
 
         )

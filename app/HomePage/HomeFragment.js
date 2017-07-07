@@ -64,13 +64,15 @@ export default class GXS extends Component {
         }
         const  banners = [];
         for (let i = 0; i < this.state.bannerSource.length;i++){
-            const  item = this.state.bannerSource[i].picture;
+            const  item = this.state.bannerSource[i];
             banners.push(
                 <TouchableWithoutFeedback  key={i} onPress={()=>{
-                    AlertIOS.alert('图片地址 =   '+item)
+                   // AlertIOS.alert('图片地址 =   '+item)
+                    const  navigate  = this.props.navigate;
+                    navigate('NowApply',{name:''+item.title,applyUrl:item.url})
                 }}>
                     <Image resizeMode='stretch'
-                        style={styles.image} source={{uri:item+''}}/>
+                        style={styles.image} source={{uri:item.picture}}/>
                 </TouchableWithoutFeedback>
             )
         }
@@ -127,7 +129,6 @@ export default class GXS extends Component {
                 </View>
                 <TouchableWithoutFeedback
                 onPress={()=>{
-                    //this.getBa''+this.state.bannerSource.length)
                     const  navigate  = this.props.navigate;
                     navigate('ProductCenter')
                     //
